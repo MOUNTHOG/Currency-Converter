@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/7d237d6187.js" crossorigin="anonymous"></script>
+    <title>Currency Exchange</title>
+    
+</head>
+<body>
+    <div class="main">
+    <div class="container">
+
+        <h1>Currency Converter</h1>
+        <form action="/result" method="POST">
+            <div class="amount">
+                <label for="amount"><h3>Enter Amount for Conversion</h3></label>
+                <input class="input" type="text" name="amount" id="amount" >
+            </div>
+            <div class="conversion">
+            <div class="from">
+                <p>From</p>
+                <% if (locals.from_country) { %>
+                    <img id="from-img" src="https://flagsapi.com/<%= country[locals.from_country] %>/flat/64.png">
+                <% }else{ %>
+                    <img id="from-img" src="https://flagsapi.com/US/flat/64.png">
+                <% } %>
+                <select name="from" id="from-code">
+                    <% for (const code in country) { %>
+                        <option value="<%= code %>" data-code="<%= country[code] %>" <%= code === locals.from_country ? 'selected' : '' %> ><%= code %></option>
+                    <% } %>
+                </select>
+            </div>
+            <div class="icon">
+            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+            </div>
+            <div class="to">
+                <p>To</p>
+                <% if (locals.to_country) { %>
+                    <img id="to-img" src="https://flagsapi.com/<%= country[locals.to_country] %>/flat/64.png">
+                <% }else{ %>
+                    <img id="to-img" src="https://flagsapi.com/IN/flat/64.png">
+                <% } %>
+                <select name="to" id="to-code">
+                    <% for (const code in country) { %>
+                        <option value="<%= code %>" data-code="<%= country[code] %>" <%= code === locals.to_country ? 'selected' : '' %> ><%= code %></option>
+                    <% } %>
+                </select>
+            </div>
+            </div>
+            <div class="value">
+            <input class="submit" type="submit" value="Get Exchange Rate">
+            </div>
+        </form>
+        <div class="exchange">
+        <% if (locals.c1 && locals.amount) { %>
+            <div class="exchange">
+                <%= Math.round(locals.c1 * locals.amount * 100) / 100 %> <%= locals.from_country %> = <%= Math.round(locals.c2 * locals.amount * 100) / 100  %> <%= locals.to_country %>
+            </div>
+        <% } else if(locals.c1) { %>
+            <div class="exchange">
+                <%= Math.round(locals.c1 * 1 * 100) / 100 %> <%= locals.from_country %> = <%= (Math.round(locals.c2 * 1 * 100) / 100) == 0 ? locals.c2 : Math.round(locals.c2 * 1 * 100) / 100 %> <%= locals.to_country %>
+            </div>
+        <% }else %>
+        </div>
+    </div>
+</div>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const fromImg = document.querySelector('#from-img');
+            const fromCode = document.querySelector('#from-code');
+            const toImg = document.querySelector('#to-img');
+            const toCode = document.querySelector('#to-code');
+
+            fromCode.addEventListener('change', (event) => {
+                const countryCode1 = fromCode.options[fromCode.selectedIndex].dataset.code;
+                
+                fromImg.src = `https://flagsapi.com/${countryCode1}/flat/64.png`;
+            });
+
+            toCode.addEventListener('change', (event) => {
+                const countryCode2 = toCode.options[toCode.selectedIndex].dataset.code;
+                
+                toImg.src = `https://flagsapi.com/${countryCode2}/flat/64.png`;
+            });
+        });
+    </script>
+    
+</body>
+</html>
