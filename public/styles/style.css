@@ -35,9 +35,8 @@ body{
     justify-content: space-evenly;
     border-radius: 10px;
     background-color: rgb(255, 216, 155);
-    margin: 80px;
+    margin-top: 80px;
     padding: 0 20px;
-    top: 300px;
     opacity: .95;
 }
 
